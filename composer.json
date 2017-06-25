@@ -1,0 +1,19 @@
+{
+  "name": "seapip/wearify",
+  "description": "Authentication server for Wearify.",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Thomas Gladdines",
+      "email": "seahorsepip@outlook.com"
+    }
+  ],
+  "require": {
+    "slim/slim": "3.8.1",
+    "nategood/httpful": "0.2.20",
+    "simple-crud/simple-crud": "v6.11.2",
+    "paragonie/random_compat": "v2.0.10",
+    "defuse/php-encryption": "2.0.3"
+  }
+}
