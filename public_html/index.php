@@ -23,7 +23,7 @@ $app = new Slim\App($container);
 $app->get("/token", function (Request $request, Response $response) {
     $token = str_replace(["+", "/", "="], "", base64_encode(random_bytes(16)));
     $key = str_replace(["+", "/", "="], "", base64_encode(random_bytes(16)));
-	apc_store($token . "hash", password_hash($key, PASSWORD_DEFAULT), 300);
+    apc_store($token . "hash", password_hash($key, PASSWORD_DEFAULT), 300);
     return $response->withJson([
         "token" => $token,
         "key" => $key
@@ -42,11 +42,11 @@ $app->get("/token/{token}", function (Request $request, Response $response, $arg
     return $response->withJson($data->body);
 });
 $app->get("/token/{token}/{key}", function (Request $request, Response $response, $args) {
-	$code_encrypted = apc_fetch($args["token"] . "code");
+    $code_encrypted = apc_fetch($args["token"] . "code");
     if (!$code_encrypted) {
         return $response->withStatus(404)->withJson(["error" => "waiting_for_login"]);
     }
-	apc_delete($args["token"] . "code");
+    apc_delete($args["token"] . "code");
     try {
         $code = Crypto\Crypto::decryptWithPassword($code_encrypted, $args["key"]);
         $data = \Httpful\Request::post("https://accounts.spotify.com/api/token")
@@ -68,10 +68,10 @@ $app->get("/token/{token}/{key}", function (Request $request, Response $response
     return $response->withStatus(404)->withJson(["error" => "wrong_or_expired_token"]);
 });
 $app->get("/login/{token}/{key}", function (Request $request, Response $response, $args) {
-	$hash = apc_fetch($args["token"] . "hash");
+    $hash = apc_fetch($args["token"] . "hash");
     if ($hash) {
         if (password_verify($args["key"], $hash)) {
-			apc_delete($token . "hash");
+            apc_delete($token . "hash");
             $_SESSION["token"] = $args["token"];
             $_SESSION["key"] = $args["key"];
             return $response
@@ -88,7 +88,7 @@ $app->get("/login/{token}/{key}", function (Request $request, Response $response
                             "streaming",
                             "user-read-playback-state",
                             "user-modify-playback-state",
-							"user-library-read"])
+                            "user-library-read"])
                     ]));
         }
         return $response->withStatus(404)->withJson(["error" => "wrong_key"]);
