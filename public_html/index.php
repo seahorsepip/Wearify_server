@@ -98,7 +98,7 @@ $app->get("/login/{token}/{key}", function (Request $request, Response $response
 $app->get("/callback", function (Request $request, Response $response) {
     $params = $request->getQueryParams();
     if (isset($params["code"]) && isset($_SESSION["token"]) && isset($_SESSION["key"])) {
-		apc_store($_SESSION["token"] . "code", Crypto\Crypto::encryptWithPassword($params["code"], $_SESSION["key"]), 300);
+        apc_store($_SESSION["token"] . "code", Crypto\Crypto::encryptWithPassword($params["code"], $_SESSION["key"]), 300);
         session_destroy();
         return $response;
     }
